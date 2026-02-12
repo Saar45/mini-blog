@@ -34,11 +34,10 @@ Un blog complet développé avec Symfony 7.4, incluant un système de gestion d'
 ## Installation
 
 ### Prérequis
-- PHP 8.2 ou supérieur
-- Composer
-- Symfony CLI (optionnel mais recommandé)
+- Docker
+- Docker Compose
 
-### Installation locale
+### Démarrage
 
 1. **Cloner le dépôt**
 ```bash
@@ -46,81 +45,7 @@ git clone <repository-url>
 cd mini_blog
 ```
 
-2. **Installer les dépendances**
-```bash
-composer install
-```
-
-3. **Configurer les variables d'environnement**
-
-Copiez le fichier d'exemple et générez une clé secrète :
-```bash
-cp .env.example .env
-```
-
-Générez une clé `APP_SECRET` sécurisée :
-```bash
-# Sur macOS/Linux
-openssl rand -hex 32
-
-# Ou avec PHP
-php -r "echo bin2hex(random_bytes(32));"
-```
-
-Copiez la clé générée et mettez-la dans le fichier `.env` :
-```env
-APP_SECRET=votre_cle_generee_ici
-```
-
-> **Important** : La clé `APP_SECRET` est essentielle pour la sécurité (CSRF, sessions, cookies). Ne la commitez jamais sur Git !
-
-4. **Configurer la base de données**
-
-Modifiez le fichier `.env` pour configurer MySQL :
-```env
-DATABASE_URL="mysql://root:root@127.0.0.1:3306/mini_blog?serverVersion=8.0.32&charset=utf8mb4"
-```
-
-Puis exécutez :
-```bash
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-```
-
-5. **Charger les données de test** (optionnel)
-```bash
-php bin/console doctrine:fixtures:load
-```
-
-Cela créera :
-- Un administrateur : `admin@blog.com` / `admin123`
-- Un utilisateur : `user@blog.com` / `user123`
-- Un utilisateur en attente : `pending@blog.com` / `pending123`
-- 5 articles avec catégories
-- Plusieurs commentaires de test
-
-5. **Démarrer le serveur**
-```bash
-# Avec Symfony CLI
-symfony server:start
-
-# Ou avec le serveur PHP intégré
-php -S localhost:8000 -t public/
-```
-
-6. **Accéder à l'application**
-- Site public : `http://localhost:8000`
-- Administration : `http://localhost:8000/admin` (après connexion avec admin@blog.com)
-
-## Installation avec Docker
-
-### Prérequis
-- Docker
-- Docker Compose
-
-### Démarrage avec Docker
-
-1. **Configurer les variables d'environnement**
+2. **Configurer les variables d'environnement**
 ```bash
 cp .env.example .env
 ```
@@ -134,24 +59,31 @@ openssl rand -hex 32
 APP_SECRET=votre_cle_generee_ici
 ```
 
-> Docker Compose lira automatiquement les variables depuis le fichier `.env`
+> **Important** : La clé `APP_SECRET` est essentielle pour la sécurité (CSRF, sessions, cookies). Docker Compose lira automatiquement les variables depuis le fichier `.env`
 
-2. **Construire et démarrer les conteneurs**
+3. **Construire et démarrer les conteneurs**
 ```bash
 docker compose up -d --build
 ```
 
-3. **Exécuter les migrations**
+4. **Exécuter les migrations**
 ```bash
 docker compose exec php php bin/console doctrine:migrations:migrate
 ```
 
-4. **Charger les données de test** (optionnel)
+5. **Charger les données de test**
 ```bash
 docker compose exec php php bin/console doctrine:fixtures:load
 ```
 
-5. **Accéder à l'application**
+Cela créera :
+- Un administrateur : `admin@blog.com` / `admin123`
+- Un utilisateur : `user@blog.com` / `user123`
+- Un utilisateur en attente : `pending@blog.com` / `pending123`
+- 5 articles avec catégories
+- Plusieurs commentaires de test
+
+6. **Accéder à l'application**
 - Site : `http://localhost:8080`
 - Administration : `http://localhost:8080/admin`
 - phpMyAdmin : `http://localhost:8081` (root/root)
