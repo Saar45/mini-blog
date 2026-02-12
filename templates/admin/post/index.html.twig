@@ -34,7 +34,7 @@
                             <tr>
                                 <td>{{ post.id }}</td>
                                 <td>
-                                    <a href="{{ path('app_post_show', {id: post.id}) }}" target="_blank">
+                                    <a href="{{ path('app_post_show', {slug: post.slug}) }}" target="_blank">
                                         {{ post.title }}
                                     </a>
                                 </td>

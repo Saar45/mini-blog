@@ -19,6 +19,9 @@ class Post
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $slug = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
@@ -61,8 +64,44 @@ class Post
     public function setTitle(string $title): static
     {
         $this->title = $title;
+        // Auto-generate slug when title is set
+        if (empty($this->slug)) {
+            $this->slug = $this->generateSlug($title);
+        }
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Generate a URL-friendly slug from a string
+     */
+    private function generateSlug(string $string): string
+    {
+        // Convert to lowercase
+        $slug = strtolower($string);
+        
+        // Replace accented characters
+        $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
+        
+        // Replace non-alphanumeric characters with hyphens
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        
+        // Remove leading/trailing hyphens
+        $slug = trim($slug, '-');
+        
+        return $slug;
     }
 
     public function getContent(): ?string

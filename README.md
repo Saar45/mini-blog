@@ -12,8 +12,13 @@ Un blog complet développé avec Symfony 7.4, incluant un système de gestion d'
 
 ### Pour les utilisateurs connectés
 - Toutes les fonctionnalités des visiteurs
-- Ajout de commentaires sur les articles (soumis à modération)
-- Profil personnel
+- Ajout de commentaires sur les articles (soumis à modération, avec limitation de débit)
+- **Profil personnel** : 
+  - Modifier les informations (prénom, nom, email)
+  - Changer la photo de profil
+  - Changer le mot de passe
+  - Voir ses articles publiés
+  - Voir ses commentaires avec leur statut
 
 ### Pour les administrateurs
 - **Gestion des articles** : Création, modification et suppression d'articles
@@ -159,6 +164,26 @@ L'application utilise Bootstrap 5.3 pour un design moderne et responsive :
 - Contrôle d'accès basé sur les rôles (ROLE_USER, ROLE_ADMIN)
 - Protection des routes d'administration
 - Modération des commentaires avant publication
+- **Limitation de débit** : Maximum 3 commentaires par utilisateur toutes les 15 minutes
+
+## Fonctionnalités avancées
+
+### URLs SEO-friendly
+- Slugs générés automatiquement à partir des titres d'articles
+- URLs lisibles : `/post/mon-premier-article` au lieu de `/post/1`
+- Redirection automatique si le slug change
+
+### Gestion de profil utilisateur
+- Modification des informations personnelles
+- Upload de photo de profil (JPEG, PNG, GIF - max 2 Mo)
+- Changement de mot de passe sécurisé
+- Historique des articles et commentaires
+- Indicateurs de statut des commentaires (approuvé, en attente, rejeté)
+
+### Protection anti-spam
+- Rate limiting sur les soumissions de commentaires
+- Messages d'erreur clairs et en français
+- Consommation de jetons par utilisateur
 
 ## Tests
 
@@ -167,12 +192,20 @@ Pour tester l'application :
 1. **Accès public** : Visitez la page d'accueil et consultez les articles
 2. **Inscription** : Créez un nouveau compte (il sera en attente de validation)
 3. **Connexion utilisateur** : Connectez-vous avec `user@blog.com` / `user123`
-4. **Ajout de commentaire** : Ajoutez un commentaire sur un article
-5. **Connexion admin** : Connectez-vous avec `admin@blog.com` / `admin123`
-6. **Dashboard admin** : Consultez les statistiques
-7. **Gestion des utilisateurs** : Activez le compte en attente
-8. **Modération** : Approuvez ou rejetez les commentaires
-9. **Gestion du contenu** : Créez, modifiez ou supprimez des articles et catégories
+4. **Profil utilisateur** : 
+   - Accédez à votre profil via le menu utilisateur
+   - Modifiez vos informations personnelles
+   - Téléchargez une photo de profil
+   - Changez votre mot de passe
+   - Consultez vos articles et commentaires
+5. **Ajout de commentaire** : Ajoutez un commentaire sur un article
+6. **Rate limiting** : Essayez d'ajouter plus de 3 commentaires en 15 minutes
+7. **Connexion admin** : Connectez-vous avec `admin@blog.com` / `admin123`
+8. **Dashboard admin** : Consultez les statistiques
+9. **Gestion des utilisateurs** : Activez le compte en attente
+10. **Modération** : Approuvez ou rejetez les commentaires
+11. **Gestion du contenu** : Créez, modifiez ou supprimez des articles et catégories
+12. **URLs SEO** : Vérifiez que les URLs des articles utilisent des slugs lisibles
 
 ## Déploiement
 

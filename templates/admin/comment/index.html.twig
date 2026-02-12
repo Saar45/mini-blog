@@ -28,7 +28,7 @@
                     {% for comment in pendingComments %}
                         <tr>
                             <td>
-                                <a href="{{ path('app_post_show', {id: comment.post.id}) }}" target="_blank">
+                                <a href="{{ path('app_post_show', {slug: comment.post.slug}) }}" target="_blank">
                                     {{ comment.post.title }}
                                 </a>
                             </td>
@@ -90,7 +90,7 @@
                         {% for comment in comments %}
                             <tr>
                                 <td>
-                                    <a href="{{ path('app_post_show', {id: comment.post.id}) }}" target="_blank">
+                                    <a href="{{ path('app_post_show', {slug: comment.post.slug}) }}" target="_blank">
                                         {{ comment.post.title }}
                                     </a>
                                 </td>

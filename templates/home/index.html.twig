@@ -28,7 +28,7 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="{{ path('app_post_show', {id: post.id}) }}" class="text-decoration-none text-dark">
+                            <a href="{{ path('app_post_show', {slug: post.slug}) }}" class="text-decoration-none text-dark">
                                 {{ post.title }}
                             </a>
                         </h5>
@@ -46,7 +46,7 @@
                         {% endif %}
                     </div>
                     <div class="card-footer bg-transparent">
-                        <a href="{{ path('app_post_show', {id: post.id}) }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ path('app_post_show', {slug: post.slug}) }}" class="btn btn-sm btn-outline-primary">
                             Lire la suite <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
