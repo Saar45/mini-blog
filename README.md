@@ -51,7 +51,30 @@ cd mini_blog
 composer install
 ```
 
-3. **Configurer la base de données**
+3. **Configurer les variables d'environnement**
+
+Copiez le fichier d'exemple et générez une clé secrète :
+```bash
+cp .env.example .env
+```
+
+Générez une clé `APP_SECRET` sécurisée :
+```bash
+# Sur macOS/Linux
+openssl rand -hex 32
+
+# Ou avec PHP
+php -r "echo bin2hex(random_bytes(32));"
+```
+
+Copiez la clé générée et mettez-la dans le fichier `.env` :
+```env
+APP_SECRET=votre_cle_generee_ici
+```
+
+> **Important** : La clé `APP_SECRET` est essentielle pour la sécurité (CSRF, sessions, cookies). Ne la commitez jamais sur Git !
+
+4. **Configurer la base de données**
 
 Modifiez le fichier `.env` pour configurer MySQL :
 ```env
@@ -64,7 +87,7 @@ php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
-4. **Charger les données de test** (optionnel)
+5. **Charger les données de test** (optionnel)
 ```bash
 php bin/console doctrine:fixtures:load
 ```
@@ -97,22 +120,38 @@ php -S localhost:8000 -t public/
 
 ### Démarrage avec Docker
 
-1. **Construire et démarrer les conteneurs**
+1. **Configurer les variables d'environnement**
+```bash
+cp .env.example .env
+```
+
+Générez et configurez une clé `APP_SECRET` dans le fichier `.env` :
+```bash
+# Générer la clé
+openssl rand -hex 32
+
+# Copiez le résultat dans .env
+APP_SECRET=votre_cle_generee_ici
+```
+
+> Docker Compose lira automatiquement les variables depuis le fichier `.env`
+
+2. **Construire et démarrer les conteneurs**
 ```bash
 docker compose up -d --build
 ```
 
-2. **Exécuter les migrations**
+3. **Exécuter les migrations**
 ```bash
 docker compose exec php php bin/console doctrine:migrations:migrate
 ```
 
-3. **Charger les données de test** (optionnel)
+4. **Charger les données de test** (optionnel)
 ```bash
 docker compose exec php php bin/console doctrine:fixtures:load
 ```
 
-4. **Accéder à l'application**
+5. **Accéder à l'application**
 - Site : `http://localhost:8080`
 - Administration : `http://localhost:8080/admin`
 - phpMyAdmin : `http://localhost:8081` (root/root)
