@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} - Mini Blog{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- Article -->
+        <article class="mb-4">
+            <header class="mb-4">
+                <h1 class="fw-bolder">{{ post.title }}</h1>
+                <div class="text-muted fst-italic mb-2">
+                    <i class="bi bi-calendar"></i> Publié le {{ post.publishedAt|date('d/m/Y à H:i') }}
+                    par <strong>{{ post.author.fullName }}</strong>
+                </div>
+                {% if post.category %}
+                    <span class="badge bg-primary">{{ post.category.name }}</span>
+                {% endif %}
+            </header>
+
+            {% if post.picture %}
+                <figure class="mb-4">
+                    <img class="img-fluid rounded" src="{{ post.picture }}" alt="{{ post.title }}" />
+                </figure>
+            {% endif %}
+
+            <section class="mb-5">
+                <div class="text-break">
+                    {{ post.content|nl2br }}
+                </div>
+            </section>
+        </article>
+
+        <!-- Comments Section -->
+        <section class="mb-5">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h3 class="mb-4">
+                        <i class="bi bi-chat-dots"></i> Commentaires ({{ comments|length }})
+                    </h3>
+
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="mb-4">
+                            <h5>Ajouter un commentaire</h5>
+                            {{ form_start(commentForm) }}
+                                <div class="mb-3">
+                                    {{ form_widget(commentForm.content) }}
+                                    {{ form_errors(commentForm.content) }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send"></i> Envoyer
+                                </button>
+                            {{ form_end(commentForm) }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.
+                        </div>
+                    {% endif %}
+
+                    <hr>
+
+                    {% if comments is empty %}
+                        <p class="text-muted">Aucun commentaire pour le moment.</p>
+                    {% else %}
+                        {% for comment in comments %}
+                            <div class="d-flex mb-4">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-person-circle fs-1"></i>
+                                </div>
+                                <div class="ms-3 flex-grow-1">
+                                    <div class="fw-bold">{{ comment.author.fullName }}</div>
+                                    <small class="text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}</small>
+                                    <p class="mt-2">{{ comment.content|nl2br }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <div class="mb-4">
+            <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
