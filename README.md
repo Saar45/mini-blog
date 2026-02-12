@@ -99,37 +99,33 @@ php -S localhost:8000 -t public/
 
 1. **Construire et démarrer les conteneurs**
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
-2. **Installer les dépendances**
+2. **Exécuter les migrations**
 ```bash
-docker-compose exec php composer install
+docker compose exec php php bin/console doctrine:migrations:migrate
 ```
 
-3. **Créer la base de données et exécuter les migrations**
+3. **Charger les données de test** (optionnel)
 ```bash
-docker-compose exec php php bin/console doctrine:migrations:migrate
+docker compose exec php php bin/console doctrine:fixtures:load
 ```
 
-4. **Charger les données de test** (optionnel)
-```bash
-docker-compose exec php php bin/console doctrine:fixtures:load
-```
-
-5. **Accéder à l'application**
+4. **Accéder à l'application**
 - Site : `http://localhost:8080`
 - Administration : `http://localhost:8080/admin`
 - phpMyAdmin : `http://localhost:8081` (root/root)
+- MySQL : `localhost:3307` (root/root)
 
 ### Arrêter les conteneurs
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Supprimer les conteneurs et volumes
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 ## Structure du projet
