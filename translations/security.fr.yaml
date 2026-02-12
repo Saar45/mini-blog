@@ -1,0 +1,6 @@
+# Messages d'erreur de sécurité en français (sans jargon technique)
+'Invalid CSRF token.': 'La session a expiré. Veuillez rafraîchir la page et réessayer.'
+'Invalid CSRF token': 'La session a expiré. Veuillez rafraîchir la page et réessayer.'
+'The CSRF token is invalid. Please try to resubmit the form.': 'Votre session a expiré. Veuillez rafraîchir la page et soumettre à nouveau le formulaire.'
+'Invalid credentials.': 'Email ou mot de passe incorrect.'
+'Account is disabled.': 'Votre compte n''est pas encore activé. Veuillez contacter un administrateur.'
