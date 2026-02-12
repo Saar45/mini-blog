@@ -1,0 +1,218 @@
+# Mini Blog - Symfony 7.4
+
+Un blog complet développé avec Symfony 7.4, incluant un système de gestion d'articles, de commentaires et d'utilisateurs.
+
+## 🚀 Fonctionnalités
+
+### Pour les visiteurs
+- ✅ Consultation de la page d'accueil avec la liste des articles
+- ✅ Lecture des articles complets
+- ✅ Visualisation des commentaires approuvés
+- ✅ Inscription au site
+
+### Pour les utilisateurs connectés
+- ✅ Toutes les fonctionnalités des visiteurs
+- ✅ Ajout de commentaires sur les articles (soumis à modération)
+- ✅ Profil personnel
+
+### Pour les administrateurs
+- ✅ **Gestion des articles** : Création, modification et suppression d'articles
+- ✅ **Gestion des catégories** : Création, modification et suppression de catégories
+- ✅ **Gestion des utilisateurs** : Validation/désactivation des comptes utilisateurs, promotion en administrateur
+- ✅ **Modération des commentaires** : Approbation ou rejet des commentaires
+- ✅ **Dashboard** : Vue d'ensemble des statistiques du blog
+
+## 🛠 Technologies utilisées
+
+- **Framework** : Symfony 7.4 (LTS)
+- **Base de données** : SQLite (facilement adaptable à MySQL/PostgreSQL)
+- **Frontend** : Bootstrap 5.3 avec Bootstrap Icons
+- **Authentification** : Symfony Security Component
+- **ORM** : Doctrine
+
+## 📦 Installation
+
+### Prérequis
+- PHP 8.2 ou supérieur
+- Composer
+- Symfony CLI (optionnel mais recommandé)
+
+### Installation locale
+
+1. **Cloner le dépôt**
+```bash
+git clone <repository-url>
+cd mini_blog
+```
+
+2. **Installer les dépendances**
+```bash
+composer install
+```
+
+3. **Configurer la base de données**
+```bash
+# La base de données SQLite sera créée automatiquement
+php bin/console doctrine:migrations:migrate
+```
+
+4. **Charger les données de test** (optionnel)
+```bash
+php bin/console doctrine:fixtures:load
+```
+
+Cela créera :
+- Un administrateur : `admin@blog.com` / `admin123`
+- Un utilisateur : `user@blog.com` / `user123`
+- Un utilisateur en attente : `pending@blog.com` / `pending123`
+- 5 articles avec catégories
+- Plusieurs commentaires de test
+
+5. **Démarrer le serveur**
+```bash
+# Avec Symfony CLI
+symfony server:start
+
+# Ou avec le serveur PHP intégré
+php -S localhost:8000 -t public/
+```
+
+6. **Accéder à l'application**
+- Site public : `http://localhost:8000`
+- Administration : `http://localhost:8000/admin` (après connexion avec admin@blog.com)
+
+## 🐳 Installation avec Docker
+
+### Prérequis
+- Docker
+- Docker Compose
+
+### Démarrage avec Docker
+
+1. **Construire et démarrer les conteneurs**
+```bash
+docker-compose up -d --build
+```
+
+2. **Installer les dépendances**
+```bash
+docker-compose exec php composer install
+```
+
+3. **Créer la base de données et exécuter les migrations**
+```bash
+docker-compose exec php php bin/console doctrine:migrations:migrate
+```
+
+4. **Charger les données de test** (optionnel)
+```bash
+docker-compose exec php php bin/console doctrine:fixtures:load
+```
+
+5. **Accéder à l'application**
+- Site : `http://localhost:8080`
+- Administration : `http://localhost:8080/admin`
+
+### Arrêter les conteneurs
+```bash
+docker-compose down
+```
+
+### Supprimer les conteneurs et volumes
+```bash
+docker-compose down -v
+```
+
+## 📁 Structure du projet
+
+```
+mini_blog/
+├── config/             # Configuration Symfony
+├── migrations/         # Migrations de base de données
+├── public/            # Point d'entrée web
+├── src/
+│   ├── Controller/    # Contrôleurs
+│   │   ├── Admin/    # Contrôleurs admin
+│   │   ├── HomeController.php
+│   │   ├── PostController.php
+│   │   ├── RegistrationController.php
+│   │   └── SecurityController.php
+│   ├── Entity/       # Entités Doctrine
+│   ├── Form/         # Formulaires
+│   ├── Repository/   # Repositories Doctrine
+│   ├── Security/     # Classes de sécurité
+│   └── DataFixtures/ # Données de test
+├── templates/        # Templates Twig
+│   ├── admin/       # Templates admin
+│   ├── home/        # Templates publics
+│   ├── post/
+│   ├── registration/
+│   └── security/
+├── var/             # Fichiers générés (cache, logs, db)
+├── docker/          # Configuration Docker
+├── Dockerfile       # Image Docker PHP
+├── docker-compose.yml
+└── README.md
+```
+
+## 🔐 Comptes de test
+
+Après avoir chargé les fixtures :
+
+| Email | Mot de passe | Rôle | Statut |
+|-------|--------------|------|--------|
+| admin@blog.com | admin123 | ROLE_ADMIN | Actif |
+| user@blog.com | user123 | ROLE_USER | Actif |
+| pending@blog.com | pending123 | ROLE_USER | Inactif |
+
+## 🎨 Thème et Design
+
+L'application utilise Bootstrap 5.3 pour un design moderne et responsive :
+- Navigation responsive avec dropdown pour l'administration
+- Cards pour l'affichage des articles
+- Formulaires stylisés
+- Messages flash colorés
+- Dashboard avec statistiques visuelles
+- Interface d'administration intuitive
+
+## 📝 Fonctionnalités de sécurité
+
+- ✅ Protection CSRF sur tous les formulaires
+- ✅ Hashage sécurisé des mots de passe (bcrypt automatique)
+- ✅ Validation des comptes par un administrateur
+- ✅ Contrôle d'accès basé sur les rôles (ROLE_USER, ROLE_ADMIN)
+- ✅ Protection des routes d'administration
+- ✅ Modération des commentaires avant publication
+
+## 🧪 Tests
+
+Pour tester l'application :
+
+1. **Accès public** : Visitez la page d'accueil et consultez les articles
+2. **Inscription** : Créez un nouveau compte (il sera en attente de validation)
+3. **Connexion utilisateur** : Connectez-vous avec `user@blog.com` / `user123`
+4. **Ajout de commentaire** : Ajoutez un commentaire sur un article
+5. **Connexion admin** : Connectez-vous avec `admin@blog.com` / `admin123`
+6. **Dashboard admin** : Consultez les statistiques
+7. **Gestion des utilisateurs** : Activez le compte en attente
+8. **Modération** : Approuvez ou rejetez les commentaires
+9. **Gestion du contenu** : Créez, modifiez ou supprimez des articles et catégories
+
+## 🚀 Déploiement
+
+Pour un déploiement en production :
+
+1. Modifier `.env` avec les variables d'environnement de production
+2. Utiliser une base de données MySQL ou PostgreSQL
+3. Configurer un serveur web (Nginx/Apache)
+4. Activer le cache de production
+5. Configurer HTTPS
+6. Utiliser Docker pour un déploiement containerisé
+
+## 📄 Licence
+
+Ce projet a été créé dans un cadre éducatif.
+
+## 👨‍💻 Auteur
+
+Développé avec ❤️ en utilisant Symfony 7.4

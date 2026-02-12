@@ -1,0 +1,7 @@
+# Ignore development files
+/.history/
+/var/
+/vendor/
+
+# Keep structure
+!var/cache/.gitkeep
