@@ -28,6 +28,7 @@ class ProfileController extends AbstractController
     #[Route('/', name: 'app_profile')]
     public function index(PostRepository $postRepository, CommentRepository $commentRepository): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         
         return $this->render('profile/index.html.twig', [
@@ -40,6 +41,7 @@ class ProfileController extends AbstractController
     #[Route('/edit', name: 'app_profile_edit')]
     public function edit(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         
         $form = $this->createFormBuilder($user)
@@ -118,7 +120,8 @@ class ProfileController extends AbstractController
 
     #[Route('/change-password', name: 'app_profile_change_password')]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
-    {
+    {/** @var User $user */
+        
         $user = $this->getUser();
         
         $form = $this->createFormBuilder()

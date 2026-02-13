@@ -22,6 +22,7 @@ Un blog complet développé avec Symfony 7.4, incluant un système de gestion d'
 
 ### Pour les administrateurs
 - **Gestion des articles** : Création, modification et suppression d'articles
+- **Publication programmée** : Planifier la publication automatique d'articles à une date future
 - **Gestion des catégories** : Création, modification et suppression de catégories
 - **Gestion des utilisateurs** : Validation/désactivation des comptes utilisateurs, promotion en administrateur
 - **Modération des commentaires** : Approbation ou rejet des commentaires
@@ -94,6 +95,25 @@ Cela créera :
 - phpMyAdmin : `http://localhost:8081` (root/root)
 - MySQL : `localhost:3307` (root/root)
 
+### Configuration de la publication programmée (optionnel)
+
+Pour activer la publication automatique des articles programmés, configurez un cron job :
+
+```bash
+# Éditer la crontab
+crontab -e
+
+# Ajouter cette ligne pour exécuter la commande toutes les 5 minutes
+*/5 * * * * cd /chemin/vers/mini_blog && docker compose exec -T php php /var/www/html/bin/console app:publish-scheduled-posts >> /var/www/html/var/log/cron.log 2>&1
+```
+
+**Note** : Remplacez `/chemin/vers/mini_blog` par le chemin absolu de votre projet.
+
+Vous pouvez également exécuter la commande manuellement :
+```bash
+docker compose exec php php bin/console app:publish-scheduled-posts
+```
+
 ### Arrêter les conteneurs
 ```bash
 docker compose down
@@ -157,9 +177,20 @@ L'application utilise Bootstrap 5.3 pour un design moderne et responsive :
 - Interface d'administration intuitive
 
 ## Fonctionnalités de sécurité
+Affichage des photos de profil sur les articles et commentaires
+- Changement de mot de passe sécurisé
+- Historique des articles et commentaires
+- Indicateurs de statut des commentaires (approuvé, en attente, rejeté)
 
-- Protection CSRF sur tous les formulaires
-- Hashage sécurisé des mots de passe (bcrypt automatique)
+### Publication programmée d'articles
+- Les administrateurs peuvent définir une date de publication future pour les articles
+- Option "Publier immédiatement" pour ignorer la date programmée
+- Les articles programmés sont automatiquement publiés à la date définie
+- Statuts visibles dans l'interface admin :
+  - **Publié** : Article visible par tous
+  - **Programmé** : Article en attente de publication (date future)
+  - **Brouillon** : Article non publié avec une date passée
+- Commande Symfony pour la publication automatique : `app:publish-scheduled-posts`
 - Validation des comptes par un administrateur
 - Contrôle d'accès basé sur les rôles (ROLE_USER, ROLE_ADMIN)
 - Protection des routes d'administration
@@ -194,7 +225,9 @@ Pour tester l'application :
 3. **Connexion utilisateur** : Connectez-vous avec `user@blog.com` / `user123`
 4. **Profil utilisateur** : 
    - Accédez à votre profil via le menu utilisateur
-   - Modifiez vos informations personnelles
+   - MPublication programmée** : Créez un article avec une date de publication future
+13. **Vérification du statut** : Consultez la liste des articles pour voir les statuts (Publié, Programmé, Brouillon)
+14. **odifiez vos informations personnelles
    - Téléchargez une photo de profil
    - Changez votre mot de passe
    - Consultez vos articles et commentaires

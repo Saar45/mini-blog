@@ -28,6 +28,12 @@ class Post
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $publishedAt = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isPublished = false;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
@@ -49,6 +55,8 @@ class Post
     {
         $this->comments = new ArrayCollection();
         $this->publishedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
+        $this->isPublished = false;
     }
 
     public function getId(): ?int
@@ -200,5 +208,47 @@ class Post
         }
 
         return substr($this->content, 0, $length) . '...';
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): static
+    {
+        $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    /**
+     * Check if this post should be published based on the scheduled date
+     */
+    public function shouldBePublished(): bool
+    {
+        return $this->publishedAt <= new \DateTime() && !$this->isPublished;
+    }
+
+    /**
+     * Automatically publish the post if the scheduled date has passed
+     */
+    public function autoPublish(): void
+    {
+        if ($this->shouldBePublished()) {
+            $this->isPublished = true;
+        }
     }
 }

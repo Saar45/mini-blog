@@ -19,6 +19,10 @@ class PostRepository extends ServiceEntityRepository
     public function findAllPublished(): array
     {
         return $this->createQueryBuilder('p')
+            ->andWhere('p.isPublished = :published')
+            ->andWhere('p.publishedAt <= :now')
+            ->setParameter('published', true)
+            ->setParameter('now', new \DateTime())
             ->orderBy('p.publishedAt', 'DESC')
             ->getQuery()
             ->getResult();
@@ -28,8 +32,28 @@ class PostRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.category = :categoryId')
+            ->andWhere('p.isPublished = :published')
+            ->andWhere('p.publishedAt <= :now')
             ->setParameter('categoryId', $categoryId)
+            ->setParameter('published', true)
+            ->setParameter('now', new \DateTime())
             ->orderBy('p.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find posts that should be automatically published
+     * (published date has passed but still marked as unpublished)
+     */
+    public function findScheduledForPublication(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.isPublished = :published')
+            ->andWhere('p.publishedAt <= :now')
+            ->setParameter('published', false)
+            ->setParameter('now', new \DateTime())
+            ->orderBy('p.publishedAt', 'ASC')
             ->getQuery()
             ->getResult();
     }

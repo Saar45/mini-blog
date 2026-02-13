@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Post;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,9 +39,16 @@ class PostType extends AbstractType
                 'attr' => ['class' => 'form-control', 'placeholder' => 'https://example.com/image.jpg'],
             ])
             ->add('publishedAt', DateTimeType::class, [
-                'label' => 'Date de publication',
+                'label' => 'Date de publication programmée',
                 'widget' => 'single_text',
                 'attr' => ['class' => 'form-control'],
+                'help' => 'Choisissez une date future pour programmer la publication automatique',
+            ])
+            ->add('isPublished', CheckboxType::class, [
+                'label' => 'Publier immédiatement',
+                'required' => false,
+                'attr' => ['class' => 'form-check-input'],
+                'help' => 'Si coché, l\'article sera visible immédiatement (ignore la date programmée)',
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',

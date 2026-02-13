@@ -34,8 +34,16 @@
                         </h5>
                         <p class="card-text">{{ post.excerpt(100) }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="bi bi-person"></i> {{ post.author.fullName }}
+                            <small class="text-muted d-flex align-items-center">
+                                {% if post.author.profilePicture %}
+                                    <img src="/uploads/profiles/{{ post.author.profilePicture }}" 
+                                         alt="{{ post.author.fullName }}" 
+                                         class="rounded-circle me-1" 
+                                         style="width: 24px; height: 24px; object-fit: cover;">
+                                {% else %}
+                                    <i class="bi bi-person"></i>
+                                {% endif %}
+                                {{ post.author.fullName }}
                             </small>
                             <small class="text-muted">
                                 <i class="bi bi-calendar"></i> {{ post.publishedAt|date('d/m/Y') }}

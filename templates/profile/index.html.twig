@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-body text-center">
                 {% if app.user.profilePicture %}
-                    <img src="{{ asset('uploads/profiles/' ~ app.user.profilePicture) }}" 
+                    <img src="/uploads/profiles/{{ app.user.profilePicture }}" 
                          alt="{{ app.user.fullName }}" 
                          class="rounded-circle mb-3" 
                          style="width: 150px; height: 150px; object-fit: cover;">
