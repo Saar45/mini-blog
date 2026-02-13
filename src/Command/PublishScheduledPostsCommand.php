@@ -27,11 +27,39 @@ class PublishScheduledPostsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $currentTime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $io->writeln(sprintf('Current time (Paris): %s', $currentTime->format('Y-m-d H:i:s')));
+
         // Find all posts that should be published
         $posts = $this->postRepository->findScheduledForPublication();
 
         if (empty($posts)) {
             $io->info('No posts to publish at this time.');
+            
+            // Show upcoming scheduled posts for debugging
+            $upcomingPosts = $this->entityManager->getRepository(\App\Entity\Post::class)
+                ->createQueryBuilder('p')
+                ->andWhere('p.isPublished = :published')
+                ->andWhere('p.publishedAt > :now')
+                ->setParameter('published', false)
+                ->setParameter('now', $currentTime)
+                ->orderBy('p.publishedAt', 'ASC')
+                ->setMaxResults(5)
+                ->getQuery()
+                ->getResult();
+            
+            if (!empty($upcomingPosts)) {
+                $io->writeln('');
+                $io->writeln('Upcoming scheduled posts:');
+                foreach ($upcomingPosts as $post) {
+                    $io->writeln(sprintf(
+                        '  - "%s" scheduled for %s',
+                        $post->getTitle(),
+                        $post->getPublishedAt()->format('Y-m-d H:i:s')
+                    ));
+                }
+            }
+            
             return Command::SUCCESS;
         }
 

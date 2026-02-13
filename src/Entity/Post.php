@@ -54,8 +54,9 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->publishedAt = new \DateTime();
-        $this->createdAt = new \DateTime();
+        $timezone = new \DateTimeZone('Europe/Paris');
+        $this->publishedAt = new \DateTime('now', $timezone);
+        $this->createdAt = new \DateTime('now', $timezone);
         $this->isPublished = false;
     }
 

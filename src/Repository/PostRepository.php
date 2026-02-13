@@ -18,11 +18,12 @@ class PostRepository extends ServiceEntityRepository
 
     public function findAllPublished(): array
     {
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         return $this->createQueryBuilder('p')
             ->andWhere('p.isPublished = :published')
             ->andWhere('p.publishedAt <= :now')
             ->setParameter('published', true)
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', $now)
             ->orderBy('p.publishedAt', 'DESC')
             ->getQuery()
             ->getResult();
@@ -30,13 +31,14 @@ class PostRepository extends ServiceEntityRepository
 
     public function findByCategory(int $categoryId): array
     {
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         return $this->createQueryBuilder('p')
             ->andWhere('p.category = :categoryId')
             ->andWhere('p.isPublished = :published')
             ->andWhere('p.publishedAt <= :now')
             ->setParameter('categoryId', $categoryId)
             ->setParameter('published', true)
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', $now)
             ->orderBy('p.publishedAt', 'DESC')
             ->getQuery()
             ->getResult();
@@ -48,11 +50,12 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findScheduledForPublication(): array
     {
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         return $this->createQueryBuilder('p')
             ->andWhere('p.isPublished = :published')
             ->andWhere('p.publishedAt <= :now')
             ->setParameter('published', false)
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', $now)
             ->orderBy('p.publishedAt', 'ASC')
             ->getQuery()
             ->getResult();

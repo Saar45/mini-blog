@@ -33,7 +33,7 @@ class Comment
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $this->status = 'pending';
     }
 
